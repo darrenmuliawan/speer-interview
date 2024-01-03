@@ -5,7 +5,7 @@ export const Header = () => {
         viewBox="0 0 486 168"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-[60px]"
+        className="w-full h-[40px]"
       >
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g transform="translate(207.000000, 24.000000)">
