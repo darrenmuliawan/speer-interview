@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
 import { Layout } from "./components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { HOMEPAGE_ROUTE } from "./constants/routes";
-import { Homepage } from "./pages";
+import { ARCHIVED_ROUTE, HOMEPAGE_ROUTE } from "./constants/routes";
+import { ArchivedPage, Homepage } from "./pages";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -15,6 +15,7 @@ export const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path={HOMEPAGE_ROUTE} element={<Homepage />} />
+            <Route path={ARCHIVED_ROUTE} element={<ArchivedPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -4,7 +4,7 @@ import { IActivity } from "../../interfaces";
 // activities
 const _activitiesAtom = atom<IActivity[]>([]);
 
-export const useHomepageState = () => {
+export const useActivities = () => {
   // activities
   const [activities, setActivities] = useAtom(_activitiesAtom);
 

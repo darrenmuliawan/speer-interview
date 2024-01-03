@@ -1,9 +1,12 @@
 import { ArchiveBoxIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { useNavigationState } from "../../state";
 import { cn } from "../../utils";
+import { useNavigate } from "react-router-dom";
+import { ARCHIVED_ROUTE, HOMEPAGE_ROUTE } from "../../constants/routes";
 
 export const Footer = () => {
   const { selectedFooterTab, setSelectedFooterTab } = useNavigationState();
+  const navigate = useNavigate();
 
   return (
     <footer className="border-t border-neutral-200 h-[70px] flex justify-between">
@@ -14,7 +17,10 @@ export const Footer = () => {
             ? "opacity-100 font-medium bg-white"
             : "bg-neutral-100"
         )}
-        onClick={() => setSelectedFooterTab("activity")}
+        onClick={() => {
+          navigate(HOMEPAGE_ROUTE);
+          setSelectedFooterTab("activity");
+        }}
       >
         <ClockIcon
           className="h-6 w-6"
@@ -29,7 +35,10 @@ export const Footer = () => {
             ? "opacity-100 font-medium bg-white"
             : "bg-neutral-100"
         )}
-        onClick={() => setSelectedFooterTab("archived")}
+        onClick={() => {
+          navigate(ARCHIVED_ROUTE);
+          setSelectedFooterTab("archived");
+        }}
       >
         <ArchiveBoxIcon
           className="h-6 w-6"

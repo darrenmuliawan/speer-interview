@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import { useActivities } from "../../state/Activity/useActivities";
 import { useFetchActivities } from "../../state/Activity/useFetchActivities";
 
-export const Homepage = () => {
+export const ArchivedPage = () => {
   const { activities } = useActivities();
   const fetchActivitiesMutation = useFetchActivities();
 
@@ -35,7 +35,7 @@ export const Homepage = () => {
           grouped[date] = [];
         }
 
-        if (activity.is_archived) {
+        if (!activity.is_archived) {
           return;
         }
         grouped[date].push(activity);
@@ -59,16 +59,16 @@ export const Homepage = () => {
 
   return (
     <section className="p-0 flex flex-col gap-0 pb-14">
-      <div className="flex items-center justify-center absolute bottom-[70px] bg-white bg-opacity-30 w-full h-14 p-2">
-        <button className="w-full cursor-pointer bg-neutral-50 border border-neutral-200 rounded-lg p-2 text-sm h-10">
-          Archive All
+      <div className="flex p-2 items-center justify-center absolute bottom-[70px] bg-white bg-opacity-30 w-full h-14">
+        <button className="cursor-pointer w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2 text-sm h-10">
+          Unarchive All
         </button>
       </div>
       {Object.keys(groupedActivities).map((date) => (
         <div
-          key={`grouped-activities-${date}`}
+          key={`grouped-activities-archived-${date}`}
           className={cn(
-            "first:pt-2",
+            "",
             groupedActivities[date].length === 0 ? "hidden" : ""
           )}
         >
@@ -121,10 +121,6 @@ const HomepageLoading = () => {
 };
 
 const ActivityItem = ({ activity }: { activity: IActivity }) => {
-  // if (activity.is_archived) {
-  //   return null;
-  // }
-
   const renderIcon = () => {
     if (activity.call_type === "voicemail") {
       return <InboxArrowDownIcon className="h-6 w-6 stroke-blue-500" />;
