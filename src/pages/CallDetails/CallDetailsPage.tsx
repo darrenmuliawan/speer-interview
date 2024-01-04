@@ -7,7 +7,7 @@ import {
   PhoneArrowDownLeftIcon,
   PhoneArrowUpRightIcon,
 } from "@heroicons/react/24/outline";
-import { cn } from "../../utils";
+import { cn, formatDuration } from "../../utils";
 import { Button } from "../../components";
 import Skeleton from "react-loading-skeleton";
 import { useArchiveActivity } from "../../state/Activity/useArchiveActivity";
@@ -69,7 +69,7 @@ const CallDetailsContent = () => {
         To:{" "}
         {selectedActivityDetails.to ? selectedActivityDetails.to : "Unknown"}
       </p>
-      <p>Duration: {selectedActivityDetails?.duration}</p>
+      <p>Duration: {formatDuration(selectedActivityDetails?.duration)}</p>
     </div>
   );
 };

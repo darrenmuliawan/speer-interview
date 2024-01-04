@@ -27,6 +27,7 @@ export const Header = ({
   const fetchActivitiesMutation = useFetchActivities();
   const fetchActivityDetailsMutation = useFetchActivityDetails();
 
+  // handle refresh button
   const handleRefresh = () => {
     if (isRefreshing) return;
 
@@ -40,6 +41,16 @@ export const Header = ({
     }
   };
 
+  // handle go back, if current page is the first page, then go to homepage
+  const handleGoBack = () => {
+    if (location.key !== "default") {
+      navigate(-1);
+    } else {
+      navigate(HOMEPAGE_ROUTE);
+    }
+  };
+
+  // handle refresh button animation
   useEffect(() => {
     if (
       fetchActivitiesMutation.isPending ||
@@ -60,7 +71,7 @@ export const Header = ({
         {showBackButton && (
           <ChevronLeftIcon
             className="h-6 w-6 cursor-pointer hover:opacity-70 duration-200"
-            onClick={() => navigate(HOMEPAGE_ROUTE)}
+            onClick={handleGoBack}
           />
         )}
       </div>

@@ -5,8 +5,6 @@ export const request = async (
 ) => {
   try {
     var BACKEND_URL = "https://cerulean-marlin-wig.cyclic.app";
-    // var BACKEND_URL =
-    // "https://charming-bat-singlet.cyclic.app/https://cerulean-marlin-wig.cyclic.app/";
     const response = await fetch(`${BACKEND_URL}${path}`, {
       method,
       headers: {
