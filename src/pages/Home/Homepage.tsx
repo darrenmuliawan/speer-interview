@@ -12,6 +12,7 @@ import { useActivities } from "../../state/Activity/useActivities";
 import { useFetchActivities } from "../../state/Activity/useFetchActivities";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components";
+import { useArchiveAll } from "../../state/Activity/useArchiveAll";
 
 export const Homepage = () => {
   const { activities } = useActivities();
@@ -84,9 +85,16 @@ export const Homepage = () => {
 };
 
 const HomepageFooter = () => {
+  const batchArchiveMutation = useArchiveAll();
+
   return (
     <div className="flex items-center justify-center absolute bottom-[70px] bg-white bg-opacity-30 w-full h-14 p-2">
-      <Button>Archive All</Button>
+      <Button
+        onClick={batchArchiveMutation.mutate}
+        loading={batchArchiveMutation.isPending}
+      >
+        Archive All
+      </Button>
     </div>
   );
 };

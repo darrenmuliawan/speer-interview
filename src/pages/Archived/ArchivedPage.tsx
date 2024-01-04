@@ -12,6 +12,7 @@ import { useActivities } from "../../state/Activity/useActivities";
 import { useFetchActivities } from "../../state/Activity/useFetchActivities";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components";
+import { useUnarchiveAll } from "../../state/Activity/useUnarchiveAll";
 
 export const ArchivedPage = () => {
   const { activities } = useActivities();
@@ -84,9 +85,16 @@ export const ArchivedPage = () => {
 };
 
 const ArchivedPageFooter = () => {
+  const batchUnarchiveMutation = useUnarchiveAll();
+
   return (
     <div className="flex p-2 items-center justify-center absolute bottom-[70px] bg-white bg-opacity-30 w-full h-14">
-      <Button>Unarchive All</Button>
+      <Button
+        onClick={batchUnarchiveMutation.mutate}
+        loading={batchUnarchiveMutation.isPending}
+      >
+        Unarchive All
+      </Button>
     </div>
   );
 };

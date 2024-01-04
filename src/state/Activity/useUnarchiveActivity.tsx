@@ -10,11 +10,15 @@ export const useUnarchiveActivity = () => {
   const unarchiveActivity = async ({ activity }: { activity: IActivity }) => {
     try {
       // submit request
-      const response = await request(`/activities/${activity.id}`, "PATCH", {
-        is_archived: false,
-      });
+      const response: any = await request(
+        `/activities/${activity.id}`,
+        "PATCH",
+        {
+          is_archived: false,
+        }
+      );
 
-      if (response) {
+      if (response.ok) {
         // on success unarchive, update activities
         const activityIndex = activities.findIndex((a) => a.id === activity.id);
         if (activityIndex !== -1) {
@@ -27,10 +31,14 @@ export const useUnarchiveActivity = () => {
         newActivity.is_archived = false;
         setSelectedActivityDetails(newActivity);
 
-        return response;
+        return true;
       }
+
+      // popup alert
+      return false;
     } catch (e) {
       console.log("error: ", e);
+      return false;
     }
   };
 

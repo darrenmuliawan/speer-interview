@@ -10,11 +10,15 @@ export const useArchiveActivity = () => {
   const archiveActivity = async ({ activity }: { activity: IActivity }) => {
     try {
       // submit request
-      const response = await request(`/activities/${activity.id}`, "PATCH", {
-        is_archived: true,
-      });
+      const response: any = await request(
+        `/activities/${activity.id}`,
+        "PATCH",
+        {
+          is_archived: true,
+        }
+      );
 
-      if (response) {
+      if (response.ok) {
         // on success archive, update activities
         const activityIndex = activities.findIndex((a) => a.id === activity.id);
         if (activityIndex !== -1) {
@@ -28,15 +32,20 @@ export const useArchiveActivity = () => {
           is_archived: true,
         });
 
-        return response;
+        return true;
       }
+
+      // popup alert
+      return false;
     } catch (e) {
-      console.log(e);
+      console.log("archive error:", e);
+      return false;
     }
   };
 
   return useMutation({
     mutationKey: ["archive-activity"],
     mutationFn: archiveActivity,
+    retry: 3,
   });
 };
