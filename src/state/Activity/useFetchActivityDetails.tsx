@@ -3,16 +3,31 @@ import { useActivities } from "./useActivities";
 import { request } from "../../utils";
 
 export const useFetchActivityDetails = () => {
-  const { setSelectedActivityDetails } = useActivities();
+  const { setSelectedActivityDetails, setIsLoadingActivityDetails } =
+    useActivities();
 
   const fetchActivities = async ({ call_id }: { call_id: string }) => {
-    // @ts-ignore
-    const response: Response = await request(`/activities/${call_id}`);
-    const data = await response.json();
+    try {
+      // set loading state
+      setIsLoadingActivityDetails(true);
 
-    if (data) {
-      setSelectedActivityDetails(data);
-      return data;
+      // @ts-ignore
+      const response: Response = await request(`/activities/${call_id}`);
+      const data = await response.json();
+
+      if (data) {
+        setSelectedActivityDetails(data);
+
+        // reset loading state
+        setIsLoadingActivityDetails(false);
+
+        return data;
+      }
+    } catch (e) {
+      console.log(e);
+
+      // reset loading state
+      setIsLoadingActivityDetails(false);
     }
   };
 

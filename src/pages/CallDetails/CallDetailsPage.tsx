@@ -21,7 +21,7 @@ export const CallDetailsPage = () => {
 
   // get call details
   const fetchActivityDetailsMutation = useFetchActivityDetails();
-  const { selectedActivityDetails } = useActivities();
+  const { selectedActivityDetails, isLoadingActivityDetails } = useActivities();
 
   useEffect(() => {
     if (call_id) {
@@ -29,7 +29,7 @@ export const CallDetailsPage = () => {
     }
   }, [call_id]);
 
-  if (fetchActivityDetailsMutation.isPending) {
+  if (fetchActivityDetailsMutation.isPending || isLoadingActivityDetails) {
     return <CallDetailsLoading />;
   }
 

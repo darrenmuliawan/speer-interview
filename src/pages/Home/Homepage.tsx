@@ -15,7 +15,7 @@ import { Button } from "../../components";
 import { useArchiveAll } from "../../state/Activity/useArchiveAll";
 
 export const Homepage = () => {
-  const { activities } = useActivities();
+  const { activities, isLoadingActivities } = useActivities();
   const fetchActivitiesMutation = useFetchActivities();
 
   // group activity per date
@@ -56,7 +56,7 @@ export const Homepage = () => {
     }
   }, [activities]);
 
-  if (fetchActivitiesMutation.isPending) {
+  if (fetchActivitiesMutation.isPending || isLoadingActivities) {
     return <HomepageLoading />;
   }
 

@@ -3,16 +3,28 @@ import { useActivities } from "./useActivities";
 import { request } from "../../utils";
 
 export const useFetchActivities = () => {
-  const { setActivities } = useActivities();
+  const { setActivities, setIsLoadingActivities } = useActivities();
 
   const fetchActivities = async () => {
-    // @ts-ignore
-    const response: Response = await request("/activities");
-    const data = await response.json();
+    try {
+      // set loading state
+      setIsLoadingActivities(true);
 
-    if (data) {
-      setActivities(data);
-      return data;
+      // @ts-ignore
+      const response: Response = await request("/activities");
+      const data = await response.json();
+
+      if (data) {
+        setActivities(data);
+
+        // reset loading state
+        setIsLoadingActivities(false);
+        return data;
+      }
+    } catch (e) {
+      console.log(e);
+      // reset loading state
+      setIsLoadingActivities(false);
     }
   };
 

@@ -1,6 +1,14 @@
-import { ArrowLeftIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
-import { HOMEPAGE_ROUTE } from "../../constants/routes";
+import {
+  ArrowLeftIcon,
+  ArrowPathIcon,
+  ChevronLeftIcon,
+} from "@heroicons/react/24/outline";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CALL_DETAILS_ROUTE, HOMEPAGE_ROUTE } from "../../constants/routes";
+import { cn } from "../../utils";
+import { useEffect, useState } from "react";
+import { useFetchActivities } from "../../state/Activity/useFetchActivities";
+import { useFetchActivityDetails } from "../../state/Activity/useFetchActivityDetails";
 
 export const Header = ({
   showBackButton = false,
@@ -8,6 +16,43 @@ export const Header = ({
   showBackButton: boolean;
 }) => {
   const navigate = useNavigate();
+
+  // get call ID
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const call_id = searchParams.get("id");
+
+  // refresh
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const fetchActivitiesMutation = useFetchActivities();
+  const fetchActivityDetailsMutation = useFetchActivityDetails();
+
+  const handleRefresh = () => {
+    if (isRefreshing) return;
+
+    setIsRefreshing(true);
+
+    // check current page
+    if (location.pathname.startsWith(CALL_DETAILS_ROUTE) && call_id) {
+      fetchActivityDetailsMutation.mutate({ call_id: call_id });
+    } else {
+      fetchActivitiesMutation.mutate();
+    }
+  };
+
+  useEffect(() => {
+    if (
+      fetchActivitiesMutation.isPending ||
+      fetchActivityDetailsMutation.isPending
+    ) {
+      setIsRefreshing(true);
+    } else {
+      setIsRefreshing(false);
+    }
+  }, [
+    fetchActivitiesMutation.isPending,
+    fetchActivityDetailsMutation.isPending,
+  ]);
 
   return (
     <header className="p-4 border-b border-neutral-200 flex items-center justify-between">
@@ -78,7 +123,16 @@ export const Header = ({
           </g>
         </svg>
       </div>
-      <div className="h-6 w-6"></div>
+      <div className="h-6 w-6">
+        <ArrowPathIcon
+          className={cn(
+            "h-6 w-6 text-blue-500 cursor-pointer hover:opacity-70 duration-300",
+            isRefreshing ? "animate-spin" : ""
+          )}
+          onClick={isRefreshing ? undefined : handleRefresh}
+          aria-disabled={true}
+        />
+      </div>
     </header>
   );
 };
