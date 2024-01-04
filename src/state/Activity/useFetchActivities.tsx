@@ -6,8 +6,9 @@ export const useFetchActivities = () => {
   const { setActivities } = useActivities();
 
   const fetchActivities = async () => {
-    const response = await request("/activities");
-    const data = response;
+    // @ts-ignore
+    const response: Response = await request("/activities");
+    const data = await response.json();
 
     if (data) {
       setActivities(data);

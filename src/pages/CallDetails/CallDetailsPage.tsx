@@ -10,6 +10,8 @@ import {
 import { cn } from "../../utils";
 import { Button } from "../../components";
 import Skeleton from "react-loading-skeleton";
+import { useArchiveActivity } from "../../state/Activity/useArchiveActivity";
+import { useUnarchiveActivity } from "../../state/Activity/useUnarchiveActivity";
 
 export const CallDetailsPage = () => {
   // get call ID
@@ -117,7 +119,9 @@ const CallDetailsHeader = () => {
         {getDirection()}
       </div>
       <p className="text-base">
-        {format(new Date(selectedActivityDetails.created_at), "hh:mm a - PP")}
+        {selectedActivityDetails.created_at
+          ? format(new Date(selectedActivityDetails.created_at), "hh:mm a - PP")
+          : null}
       </p>
     </div>
   );
@@ -125,12 +129,32 @@ const CallDetailsHeader = () => {
 
 const ArchiveContainer = () => {
   const { selectedActivityDetails } = useActivities();
+  const archiveActivityMutation = useArchiveActivity();
+  const unarchiveActivityMutation = useUnarchiveActivity();
 
   if (!selectedActivityDetails) return null;
 
+  const handleArchive = () => {
+    if (!selectedActivityDetails.is_archived) {
+      archiveActivityMutation.mutate({
+        activity: selectedActivityDetails,
+      });
+    } else {
+      unarchiveActivityMutation.mutate({
+        activity: selectedActivityDetails,
+      });
+    }
+  };
+
   return (
     <div className="flex-1 items-end justify-center flex">
-      <Button>
+      <Button
+        onClick={handleArchive}
+        loading={
+          archiveActivityMutation.isPending ||
+          unarchiveActivityMutation.isPending
+        }
+      >
         {selectedActivityDetails.is_archived ? "Unarchive" : "Archive"}
       </Button>
     </div>

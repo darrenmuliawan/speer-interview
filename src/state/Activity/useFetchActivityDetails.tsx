@@ -6,9 +6,9 @@ export const useFetchActivityDetails = () => {
   const { setSelectedActivityDetails } = useActivities();
 
   const fetchActivities = async ({ call_id }: { call_id: string }) => {
-    const response = await request(`/activities/${call_id}`);
-    const data = response;
-    console.log("data: ", data);
+    // @ts-ignore
+    const response: Response = await request(`/activities/${call_id}`);
+    const data = await response.json();
 
     if (data) {
       setSelectedActivityDetails(data);
