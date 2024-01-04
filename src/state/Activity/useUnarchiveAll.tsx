@@ -2,10 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useActivities } from "./useActivities";
 import { useArchiveActivity } from "./useArchiveActivity";
 import { useUnarchiveActivity } from "./useUnarchiveActivity";
+import { useToast } from "../../components";
 
 export const useUnarchiveAll = () => {
   const { activities } = useActivities();
   const unarchiveActivityMutation = useUnarchiveActivity();
+  const { toast } = useToast();
 
   const unarchiveAll = async () => {
     try {
@@ -31,7 +33,11 @@ export const useUnarchiveAll = () => {
       }
 
       // popup alert
-      alert(`${count}/${archivedActivities.length} activities unarchived!`);
+      setTimeout(() => {
+        toast({
+          description: `${count}/${archivedActivities.length} activities unarchived!`,
+        });
+      }, 2000);
     } catch (e) {
       console.log(e);
     }

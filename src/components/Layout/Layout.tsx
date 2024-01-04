@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { Toaster } from "../Toast";
 
 export const Layout = ({ showFooter = true, showBackButton = false }) => {
   return (
@@ -11,7 +12,7 @@ export const Layout = ({ showFooter = true, showBackButton = false }) => {
           <Outlet />
         </div>
         {showFooter && <Footer />}
-        {/* <Toaster /> */}
+        <Toaster />
       </div>
     </div>
   );

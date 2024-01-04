@@ -3,10 +3,12 @@ import { IActivity } from "../../interfaces";
 import { request } from "../../utils";
 import { useActivities } from "./useActivities";
 import { useArchiveActivity } from "./useArchiveActivity";
+import { useToast } from "../../components";
 
 export const useArchiveAll = () => {
   const { activities } = useActivities();
   const archiveActivityMutation = useArchiveActivity();
+  const { toast } = useToast();
 
   const archiveAll = async () => {
     try {
@@ -32,7 +34,11 @@ export const useArchiveAll = () => {
       }
 
       // popup alert
-      alert(`${count}/${unarchivedActivities.length} activities archived!`);
+      setTimeout(() => {
+        toast({
+          description: `${count}/${unarchivedActivities.length} activities archived!`,
+        });
+      }, 2000);
     } catch (e) {
       console.log(e);
     }

@@ -2,10 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import { request } from "../../utils";
 import { IActivity } from "../../interfaces";
 import { useActivities } from "./useActivities";
+import { useToast } from "../../components";
 
 export const useUnarchiveActivity = () => {
   const { activities, setActivities, setSelectedActivityDetails } =
     useActivities();
+  const { toast } = useToast();
 
   const unarchiveActivity = async ({ activity }: { activity: IActivity }) => {
     try {
@@ -31,13 +33,31 @@ export const useUnarchiveActivity = () => {
         newActivity.is_archived = false;
         setSelectedActivityDetails(newActivity);
 
+        // popup alert
+        toast({
+          title: "Success",
+          description: `Activity #${activity.id} is unarchived.`,
+        });
+
         return true;
       }
 
       // popup alert
+      toast({
+        title: "Error",
+        description: `Failed to unarchive activity #${activity.id}. Please try again.`,
+        variant: "destructive",
+      });
       return false;
     } catch (e) {
       console.log("error: ", e);
+
+      // popup alert
+      toast({
+        title: "Error",
+        description: `Failed to unarchive activity #${activity.id}. Please try again.`,
+        variant: "destructive",
+      });
       return false;
     }
   };

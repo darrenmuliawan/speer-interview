@@ -2,10 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import { request } from "../../utils";
 import { IActivity } from "../../interfaces";
 import { useActivities } from "./useActivities";
+import { useToast } from "../../components";
 
 export const useArchiveActivity = () => {
   const { activities, setActivities, setSelectedActivityDetails } =
     useActivities();
+  const { toast } = useToast();
 
   const archiveActivity = async ({ activity }: { activity: IActivity }) => {
     try {
@@ -32,13 +34,31 @@ export const useArchiveActivity = () => {
           is_archived: true,
         });
 
+        // popup alert
+        toast({
+          title: "Success",
+          description: `Activity #${activity.id} is archived.`,
+        });
+
         return true;
       }
 
       // popup alert
+      toast({
+        title: "Error",
+        description: `Failed to archive activity #${activity.id}. Please try again.`,
+        variant: "destructive",
+      });
       return false;
     } catch (e) {
       console.log("archive error:", e);
+
+      // popup alert
+      toast({
+        title: "Error",
+        description: `Failed to archive activity #${activity.id}. Please try again.`,
+        variant: "destructive",
+      });
       return false;
     }
   };
