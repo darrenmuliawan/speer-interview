@@ -2,7 +2,7 @@
   "name": "frontend-hiring-challenge",
   "version": "1.0.0",
   "description": "Leap test",
-  "main": "index.js",
+  "main": "App.tsx",
   "repository": "",
   "author": "",
   "license": "",

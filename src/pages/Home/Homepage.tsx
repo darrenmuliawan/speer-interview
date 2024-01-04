@@ -34,12 +34,12 @@ export const Homepage = () => {
       activities.forEach((activity) => {
         const date = format(activity.created_at, "MMM dd, yyyy");
 
-        if (!grouped[date]) {
-          grouped[date] = [];
-        }
-
         if (activity.is_archived) {
           return;
+        }
+
+        if (!grouped[date]) {
+          grouped[date] = [];
         }
         grouped[date].push(activity);
       });
@@ -62,23 +62,29 @@ export const Homepage = () => {
 
   return (
     <section className="p-0 flex flex-col gap-0 pb-14">
-      {Object.keys(groupedActivities).map((date) => (
-        <div
-          key={`grouped-activities-${date}`}
-          className={cn(
-            "first:pt-2",
-            groupedActivities[date].length === 0 ? "hidden" : ""
-          )}
-        >
-          <p className="text-neutral-600 text-center my-2">{date}</p>
-          {groupedActivities[date]?.map((activity) => (
-            <ActivityItem
-              activity={activity}
-              key={`activity-item-${activity.id}`}
-            />
-          ))}
+      {Object.keys(groupedActivities).length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-neutral-600 text-center my-2">No activities</p>
         </div>
-      ))}
+      ) : (
+        Object.keys(groupedActivities).map((date) => (
+          <div
+            key={`grouped-activities-${date}`}
+            className={cn(
+              "first:pt-2",
+              groupedActivities[date].length === 0 ? "hidden" : ""
+            )}
+          >
+            <p className="text-neutral-600 text-center my-2">{date}</p>
+            {groupedActivities[date]?.map((activity) => (
+              <ActivityItem
+                activity={activity}
+                key={`activity-item-${activity.id}`}
+              />
+            ))}
+          </div>
+        ))
+      )}
       <HomepageFooter />
     </section>
   );
