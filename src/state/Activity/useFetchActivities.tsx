@@ -16,7 +16,7 @@ export const useFetchActivities = () => {
   };
 
   return useMutation({
-    mutationKey: ["fetch-places"],
+    mutationKey: ["fetch-activities"],
     mutationFn: fetchActivities,
   });
 };
